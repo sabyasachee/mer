@@ -11,7 +11,16 @@ def dimensional_distance(query, song):
     song = song[idx]
     return np.sqrt(np.average((query - song)**2))
 
-# def basic_distance(query, song):
+def basic_distance(query_text, query_audio, song_text, song_audio):
+    if query_text is None:
+        query = np.array(query_audio)
+        song = np.array(song_audio)
+        return np.max(np.abs(song - query))
+    if query_audio is None:
+        query = np.array(query_text)
+        song = np.array(song_text)
+        return np.max(np.abs(song - query))
+    return (np.max(np.abs(song - query)) + np.max(np.abs(song - query)))/2
 
 def compare_dimensional(query_audio, query_text, library_audio, library_text, k = 15):
     query_ids = set(list(query_audio.keys()) + list(query_text.keys()))
@@ -39,22 +48,29 @@ def compare_dimensional(query_audio, query_text, library_audio, library_text, k 
     return top_ids
 
 def compare_basic(query_audio, query_text, library_audio, library_text, k = 15):
-    query_text_avg = np.average([np.array(value) for value in query_text.values()])
-    query_audio_avg = np.average([np.array(value) for value in query_audio.values()])
+    query_ids = set(list(query_audio.keys()) + list(query_text.keys()))
+    library_ids = set(list(library_audio.keys()) + list(library_text.keys()))
+    assert len(query_ids) > 0, "empty query :("
 
-    scores = []
-    ids = set(list(library_audio.keys()) + list(library_text.keys()))
-    query_ids = list(set(list(query_audio.keys()) + list(query_text.keys())))
-    for id in ids:
-        text_score = 0
-        audio_score = 0
-        if id in library_text:
-            text_score = cosine(library_text[id], query_text_avg)
-        if id in library_audio:
-            audio_score = cosine(library_audio[id], query_audio_avg)
-        scores.append({"id": id, "text_score": text_score, "audio_score": audio_score, "total_score": text_score + audio_score})
-    scores = sorted(scores, key = lambda s: s["total_score"], reverse = True)
+    query_text_prob = None
+    query_audio_prob = None
+    if len(query_text) > 0:
+        query_text_prob = np.average([np.array(value) for value in query_text.values()])
+    if len(query_audio) > 0:
+        query_audio_prob = np.average([np.array(value) for value in query_audio.values()])
+
+    distances = []
+    for id in library_ids:
+        if id not in library_text:
+            score = basic_distance(query_text_prob, query_audio_prob, None, library_audio[id])
+        elif id not in library_audio:
+            score = basic_distance(query_text_prob, query_audio_prob, library_text[id], None)
+        else:
+            score = basic_distance(query_text_prob, query_audio_prob, library_text[id], library_audio[id])
+        distances.append((id, score))
     
-    top_ids = [v["id"] for v in scores[:k]]
-    top_ids.extend(query_ids)
-    return list(set(top_ids))
+    distances = sorted(distances, key = lambda d: d[1])
+    pprint(distances)
+
+    top_ids = [d[0] for d in distances[:k - len(query_ids)]] + list(query_ids)
+    return top_ids

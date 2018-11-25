@@ -28,8 +28,8 @@ def backend(user_query):
     dimensional_ids = compare_dimensional(query_dimensional_audio_emotion, query_dimensional_text_emotion, library_dimensional_audio_emotion, library_dimensional_text_emotion)
 
     print("making playlists")
-    # make_playlist("Basic Playlist", basic_ids)
-    # make_playlist("Valence Arousal Playlist", dimensional_ids)
+    make_playlist("Basic Playlist", basic_ids)
+    make_playlist("Valence Arousal Playlist", dimensional_ids)
 
 if __name__ == "__main__":
     test_query = [("Quiet things","Brand new"),("I'm not okay","My Chemical Romance"),("Have faith in me","Day to remember")]
