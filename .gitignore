@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.DS_Store
+.vscode
+.cache-al321rltkr20p7oftb0i801lk
