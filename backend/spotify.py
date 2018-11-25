@@ -13,7 +13,7 @@ USERNAME = 'al321rltkr20p7oftb0i801lk'
 # CLIENT_SECRET = '72b2599e6b314c1f88714a1b8b6afbb4'
 # USERNAME = 'd6w8pm7psjnzjdwinyblm1ll4'
 
-token = prompt_for_user_token(username=USERNAME, scope='user-library-read playlist-modify-private', client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri="http://www.google.com")
+token = prompt_for_user_token(username=USERNAME, scope='user-library-read user-top-read playlist-modify-private', client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri="http://www.google.com")
 spotify = Spotify(auth=token)
 
 def search(user_query, data_folder):
@@ -60,12 +60,28 @@ def get_user_library(data_folder):
                 track = item['track']
                 user_library[track['id']] = (track['name'], track['artists']) # id = name, artist
                 downloadMP3(track['preview_url'], track['id'], data_folder)
-        
+
+    #Get user's top tracks
+    results = spotify.current_user_top_tracks(limit = 50) # Add user top tracks
+    for item in results['items']:
+        track = item
+        user_library[track['id']] = (track['name'], track['artists'])  # id = name, artist
+        downloadMP3(track['preview_url'], track['id'], data_folder)
+
+    #Get 50 songs from user's library
+    results = spotify.current_user_saved_tracks(limit=50)
+    for item in results['items']:
+        track = item['track']
+        user_library[track['id']] = (track['name'], track['artists'])  # id = name, artist
+        downloadMP3(track['preview_url'], track['id'], data_folder)
+
     return user_library
 
 def make_playlist(name, ids):
     playlists = spotify.user_playlist_create(USERNAME, name, public=False)
     playlistID = playlists['id']
-    ids = ids[:50]
     spotify.user_playlist_add_tracks('al321rltkr20p7oftb0i801lk', playlistID, ids)
     return playlistID
+
+if __name__ == '__main__':
+    get_user_library("../library_data/")
