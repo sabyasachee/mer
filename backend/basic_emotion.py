@@ -6,21 +6,21 @@ import torch
 from .conv_net import ConvNet
 
 angry_model = ConvNet(1)
-angry_model.load_state_dict(torch.load('models/model.pth'))
+angry_model.load_state_dict(torch.load('models/angry_model.pth'))
 angry_model.eval()
 
 fear_model = ConvNet(1)
-fear_model.load_state_dict(torch.load('models/model.pth'))
+fear_model.load_state_dict(torch.load('models/fear_model.pth'))
 fear_model.eval()
 
 happy_model = ConvNet(1)
-happy_model.load_state_dict(torch.load('models/model.pth'))
+happy_model.load_state_dict(torch.load('models/happy_model.pth'))
 happy_model.eval()
 
 sad_model = ConvNet(1)
-sad_model.load_state_dict(torch.load('models/model.pth'))
+sad_model.load_state_dict(torch.load('models/sad_model.pth'))
 sad_model.eval()
-print("basic emotion model loaded")
+print("basic emotion models loaded")
 
 def audio_read(f):
     y, _ = librosa.core.load(f, sr=None)
