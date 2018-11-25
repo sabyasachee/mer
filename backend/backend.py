@@ -32,5 +32,5 @@ def backend(user_query):
     # make_playlist("Valence Arousal Playlist", dimensional_ids)
 
 if __name__ == "__main__":
-    test_query = [("Happy","Williams"),("Hello","Adele"),("We are the champions","Queen")]
+    test_query = [("Quiet things","Brand new"),("I'm not okay","My Chemical Romance"),("Have faith in me","Day to remember")]
     backend(test_query)

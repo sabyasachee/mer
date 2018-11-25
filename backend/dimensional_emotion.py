@@ -31,7 +31,7 @@ def get_dimensional_emotion(ids, songs_folder = "data/", temp_folder = "temp/", 
                 mp3_file.export(wav_file_path, format="wav")
                 print("converted mp3 to wav...", end = "")
 
-                os.system("opensmile/inst/bin/SMILExtract -noconsoleoutput -C IS13_ComParE_lld-func.conf -I {} -O {}".format(wav_file_path, feature_file_path))
+                os.system("opensmile/inst/bin/SMILExtract -C backend/IS13_ComParE_lld-func.conf -I {} -O {}".format(wav_file_path, feature_file_path))
                 print("features created...", end = "")
                 found_features = True
             else:

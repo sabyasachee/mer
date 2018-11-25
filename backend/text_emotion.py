@@ -32,9 +32,9 @@ def get_basic_text_emotion(ids, data_folder):
                     for e in basic_emotions:
                         emotion_count[e] = emotion_count[e]/n_words
                 
-                total = emotion_count['anger']+emotion_count['disgust']+emotion_count['fear']+emotion_count['joy']+emotion_count['sadness']+emotion_count['anticipation']
+                total = emotion_count['anger']+emotion_count['fear']+emotion_count['joy']+emotion_count['sadness']
                 if total > 0:
-                    vector = [emotion_count['anger']/total, emotion_count['anticipation']/total, emotion_count['disgust']/total, emotion_count['fear']/total, emotion_count['joy']/total, emotion_count['sadness']/total]
+                    vector = [emotion_count['anger']/total, emotion_count['fear']/total, emotion_count['joy']/total, emotion_count['sadness']/total]
                     basic_text_emotion[id] = vector
                     print("basic emotion text calculated")
                 else:
