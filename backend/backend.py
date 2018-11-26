@@ -4,6 +4,7 @@ from .text_emotion import get_basic_text_emotion, get_dimensional_text_emotion
 from .dimensional_emotion import get_dimensional_emotion
 from .basic_emotion import get_basic_emotion
 from .compare import compare_basic, compare_dimensional
+import pickle
 from pprint import pprint
 
 def backend(user_query, k = 15):
@@ -53,6 +54,11 @@ def backend(user_query, k = 15):
         var_dimensional_ids.extend(compare_dimensional(single_query_dimensional_audio_emotion, single_query_dimensional_text_emotion, library_dimensional_audio_emotion, library_dimensional_text_emotion, k//len(query), include_query=False))
     var_basic_ids = list(set(var_basic_ids)) + query_ids
     var_dimensional_ids = list(set(var_dimensional_ids)) + query_ids
+
+    pickle.dump(avg_basic_ids, open("avg_basic_ids.pkl","wb"))
+    pickle.dump(avg_dimensional_ids, open("avg_dimen_ids.pkl","wb"))
+    pickle.dump(var_basic_ids, open("var_basic_ids.pkl","wb"))
+    pickle.dump(var_dimensional_ids, open("var_dimen_ids.pkl","wb"))
 
     print("making playlists")
     make_playlist("Basic Playlist Avg", avg_basic_ids)

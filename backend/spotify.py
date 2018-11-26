@@ -6,9 +6,10 @@ import urllib
 # sophia
 CLIENT_ID = '0e7ea227ef7d407b8bf47a4c545adb3c'
 CLIENT_SECRET = '267e96c4713f46d4885a4ea6a099ead4'
-#USERNAME = 'al321rltkr20p7oftb0i801lk'
+USERNAME = 'al321rltkr20p7oftb0i801lk'
 # USERNAME = 'd6w8pm7psjnzjdwinyblm1ll4'
-USERNAME = 'hunterlum'
+# USERNAME = 'hunterlum'
+# USERNAME = 'firetrail'
 
 # # colin
 # CLIENT_ID = '4698619dc1854dd0a7d8f84b4d8dbf08'
