@@ -6,7 +6,9 @@ import urllib
 # sophia
 CLIENT_ID = '0e7ea227ef7d407b8bf47a4c545adb3c'
 CLIENT_SECRET = '267e96c4713f46d4885a4ea6a099ead4'
-USERNAME = 'al321rltkr20p7oftb0i801lk'
+#USERNAME = 'al321rltkr20p7oftb0i801lk'
+# USERNAME = 'd6w8pm7psjnzjdwinyblm1ll4'
+USERNAME = 'hunterlum'
 
 # # colin
 # CLIENT_ID = '4698619dc1854dd0a7d8f84b4d8dbf08'
@@ -80,7 +82,7 @@ def get_user_library(data_folder):
 def make_playlist(name, ids):
     playlists = spotify.user_playlist_create(USERNAME, name, public=False)
     playlistID = playlists['id']
-    spotify.user_playlist_add_tracks('al321rltkr20p7oftb0i801lk', playlistID, ids)
+    spotify.user_playlist_add_tracks(USERNAME, playlistID, ids)
     return playlistID
 
 if __name__ == '__main__':

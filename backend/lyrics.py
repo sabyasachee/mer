@@ -26,9 +26,9 @@ def download(track, artist):
         return text
 
 def download_lyrics(data, data_folder):
-    for id, (track, artists_info) in data.items():
+    for i, (id, (track, artists_info)) in enumerate(data.items()):
         if os.path.exists("{}{}_lyrics.txt".format(data_folder, id)):
-            print("id: {} lyrics already found :)".format(id))
+            print("{}. id: {} lyrics already found :)".format(i + 1, id))
             continue
 
         for punctuation in ["-","!","?","("]:
@@ -51,9 +51,9 @@ def download_lyrics(data, data_folder):
             if text is not None:
                 break
         if text is not None:
-            print("id: {} lyrics found :)".format(id))
+            print("{}. id: {} lyrics found :)".format(i+1,id))
             with open("{}{}_lyrics.txt".format(data_folder, id),"w") as fout:
                 fout.write(text)
         else:
-            print("id: {} lyrics not found :(".format(id))
+            print("{}. id: {} lyrics not found :(".format(i+1,id))
     print()

@@ -13,16 +13,23 @@ def dimensional_distance(query, song):
 
 def basic_distance(query_text, query_audio, song_text, song_audio):
     if query_text is None:
-        query = np.array(query_audio)
-        song = np.array(song_audio)
-        return np.max(np.abs(song - query))
+        if song_audio is not None:
+            return np.max(np.abs(np.array(song_audio) - np.array(query_audio)))
+        else:
+            return 1
     if query_audio is None:
-        query = np.array(query_text)
-        song = np.array(song_text)
-        return np.max(np.abs(song - query))
-    return (np.max(np.abs(song - query)) + np.max(np.abs(song - query)))/2
+        if song_text is not None:
+            return np.max(np.abs(np.array(song_text) - np.array(query_text)))
+        else:
+            return 1
+    
+    if song_audio is None:
+        return np.max(np.abs(np.array(song_text) - np.array(query_text)))
+    if song_text is None:
+        return np.max(np.abs(np.array(song_audio) - np.array(query_audio)))
+    return (np.max(np.abs(np.array(song_text) - np.array(query_text))) + np.max(np.abs(np.array(song_audio) - np.array(query_audio))))/2
 
-def compare_dimensional(query_audio, query_text, library_audio, library_text, k = 15):
+def compare_dimensional(query_audio, query_text, library_audio, library_text, k = 15, include_query = True):
     query_ids = set(list(query_audio.keys()) + list(query_text.keys()))
     library_ids = set(list(library_audio.keys()) + list(library_text.keys()))
     assert len(query_ids) > 0, "empty query :("
@@ -42,12 +49,15 @@ def compare_dimensional(query_audio, query_text, library_audio, library_text, k 
             song[2:] = [library_audio[id]["arousal"], library_audio[id]["valence"]]
         distances.append((id, dimensional_distance(query_vec, song)))
     distances = sorted(distances, key = lambda d: d[1])
-    pprint(distances)
+    # pprint(distances)
 
-    top_ids = [d[0] for d in distances[:k - len(query_ids)]] + list(query_ids)
+    if include_query:
+        top_ids = [d[0] for d in distances[:k - len(query_ids)]] + list(query_ids)
+    else:
+        top_ids = [d[0] for d in distances[:k]]
     return top_ids
 
-def compare_basic(query_audio, query_text, library_audio, library_text, k = 15):
+def compare_basic(query_audio, query_text, library_audio, library_text, k = 15, include_query = True):
     query_ids = set(list(query_audio.keys()) + list(query_text.keys()))
     library_ids = set(list(library_audio.keys()) + list(library_text.keys()))
     assert len(query_ids) > 0, "empty query :("
@@ -70,7 +80,10 @@ def compare_basic(query_audio, query_text, library_audio, library_text, k = 15):
         distances.append((id, score))
     
     distances = sorted(distances, key = lambda d: d[1])
-    pprint(distances)
+    # pprint(distances)
 
-    top_ids = [d[0] for d in distances[:k - len(query_ids)]] + list(query_ids)
+    if include_query:
+        top_ids = [d[0] for d in distances[:k - len(query_ids)]] + list(query_ids)
+    else:
+        top_ids = [d[0] for d in distances[:k]]
     return top_ids
